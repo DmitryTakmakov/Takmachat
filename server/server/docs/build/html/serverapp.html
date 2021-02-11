@@ -1,0 +1,755 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server module &#8212; Takmachat 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Common utils module" href="utils.html" />
+    <link rel="prev" title="Client module" href="clientapp.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="server-module">
+<h1>Server module<a class="headerlink" href="#server-module" title="Permalink to this headline">¶</a></h1>
+<p>Messenger’s server module. Processes message dictionaries, stores RSA public keys of clients.</p>
+<p>Usage:</p>
+<p>The module supports the following command line arguments:</p>
+<dl class="option-list">
+<dt><kbd><span class="option">-a</span>, <span class="option">--addr</span></kbd></dt>
+<dd><p>Address from which the connection is accepted. If blank, then connection is accepted from all addresses.</p>
+</dd>
+<dt><kbd><span class="option">-p</span>, <span class="option">--port</span></kbd></dt>
+<dd><p>Listening port that accepts the connections</p>
+</dd>
+<dt><kbd><span class="option">-n</span>, <span class="option">--no_gui</span></kbd></dt>
+<dd><p>The ‘no gui’ flag. If present the server module will run in console window with limited functionality. Note, that in this mode only one command is supported: exit - stops the server.</p>
+</dd>
+</dl>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">server.py</span> <span class="pre">-p</span> <span class="pre">8080</span></code></p></li>
+</ul>
+<p><em>Starts the server at port 8080</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">server.py</span> <span class="pre">-a</span> <span class="pre">localhost</span></code></p></li>
+</ul>
+<p><em>Starts the server that accepts connections from localhost only</em></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">server.py</span> <span class="pre">-n</span></code></p></li>
+</ul>
+<p><em>Starts the server with no GUI</em></p>
+<div class="section" id="module-server">
+<span id="server-py"></span><h2>server.py<a class="headerlink" href="#module-server" title="Permalink to this headline">¶</a></h2>
+<p>The main module of the server application, includes parsers for
+command line arguments, configuration file and the main loop.
+The main server loop works the following way:
+first it acquires the launch and configuration parameters, then
+launches the server thread and initializes the GUI.</p>
+</div>
+<div class="section" id="server-core-py">
+<h2>server_core.py<a class="headerlink" href="#server-core-py" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="serverapp.server_core.MessagingServer">
+<em class="property">class </em><code class="sig-prename descclassname">serverapp.server_core.</code><code class="sig-name descname">MessagingServer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">listening_address</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">listening_port</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_db.ServerDatabase" title="serverapp.server_db.ServerDatabase">serverapp.server_db.ServerDatabase</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_core.MessagingServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main class of the server.</p>
+<dl class="py method">
+<dt id="serverapp.server_core.MessagingServer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">listening_address</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">listening_port</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_db.ServerDatabase" title="serverapp.server_db.ServerDatabase">serverapp.server_db.ServerDatabase</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_core.MessagingServer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Server initialization.
+Creates the attributes needed for the server to work,
+sets the working flag as True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>listening_address</strong> – server’s IP address</p></li>
+<li><p><strong>listening_port</strong> – server’s port</p></li>
+<li><p><strong>db</strong> – server’s database</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_core.MessagingServer.authorize_client">
+<code class="sig-name descname">authorize_client</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">client</span><span class="p">:</span> <span class="n">socket.socket</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_core.MessagingServer.authorize_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the client’s authorization. Checks if the username isn’t already taken,
+then checks if the user is registered on the server. If those two checks pass,
+the method then initiates the exchange of encrypted passwords with the client.
+If the password is correct, the client is logged onto the server, otherwise the
+client is removed from the server and his socket gets closed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – presence message</p></li>
+<li><p><strong>client</strong> – client’s socket</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_core.MessagingServer.delete_client">
+<code class="sig-name descname">delete_client</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">client</span><span class="p">:</span> <span class="n">socket.socket</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_core.MessagingServer.delete_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes the connection with the client who decided to leave the server.
+Logs him out in the DB, deletes from the list of active users and closes the socket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>client</strong> – client’s socket</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_core.MessagingServer.process_client_message">
+<code class="sig-name descname">process_client_message</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">client</span><span class="p">:</span> <span class="n">socket.socket</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_core.MessagingServer.process_client_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the messages from clients according to their service codes.
+This method handles authorization, client’s exit, contact list, existing users’
+and public key requests, requests to add or delete a contact and messages from
+client to client (this method also records these messages to server DB). This method
+triggers a relevant handler if needed, or tries to send a response with a relevant
+service code (200, 202, 511 or 400 in case of bad request). If sending a message
+was not possible, this method deletes the user from the list of active users.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – dictionary with a message</p></li>
+<li><p><strong>client</strong> – client’s socket</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_core.MessagingServer.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_core.MessagingServer.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main loop of the server.
+Creates a listening socket, and then accepts connections while the working flag is True.
+If there are clients with messages, sends them.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_core.MessagingServer.send_client_message">
+<code class="sig-name descname">send_client_message</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_core.MessagingServer.send_client_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the exchange of messages between clients.
+Validates the message and sends it if correct</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>message</strong> – dictionary with the message</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_core.MessagingServer.update_list">
+<code class="sig-name descname">update_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_core.MessagingServer.update_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the message with 205 code that triggers the update of contact
+and active users’ lists for all active clients.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="server-db-py">
+<h2>server_db.py<a class="headerlink" href="#server-db-py" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="serverapp.server_db.ServerDatabase">
+<em class="property">class </em><code class="sig-prename descclassname">serverapp.server_db.</code><code class="sig-name descname">ServerDatabase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation of the server’s database.</p>
+<dl class="py class">
+<dt id="serverapp.server_db.ServerDatabase.ActiveUsers">
+<em class="property">class </em><code class="sig-name descname">ActiveUsers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">login</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">address</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">port</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">datetime.datetime</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.ActiveUsers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation class for table of active clients.</p>
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.ActiveUsers.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">login</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">address</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">port</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">datetime.datetime</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.ActiveUsers.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization of table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>login</strong> – client’s nickname</p></li>
+<li><p><strong>address</strong> – client’s IP address</p></li>
+<li><p><strong>port</strong> – client’s port</p></li>
+<li><p><strong>date</strong> – date and time of activity</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="serverapp.server_db.ServerDatabase.AllUsers">
+<em class="property">class </em><code class="sig-name descname">AllUsers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">password_hash</span><span class="p">:</span> <span class="n">bytes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.AllUsers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation class for table of all users.</p>
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.AllUsers.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">password_hash</span><span class="p">:</span> <span class="n">bytes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.AllUsers.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization of the table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> – client’s login</p></li>
+<li><p><strong>password_hash</strong> – hashed password</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="serverapp.server_db.ServerDatabase.ContactList">
+<em class="property">class </em><code class="sig-name descname">ContactList</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">owner</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">contact</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.ContactList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation class for table of users’ contacts</p>
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.ContactList.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">owner</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">contact</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.ContactList.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization of table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>owner</strong> – contact owner</p></li>
+<li><p><strong>contact</strong> – contact itself</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="serverapp.server_db.ServerDatabase.UserActionHistory">
+<em class="property">class </em><code class="sig-name descname">UserActionHistory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">login</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.UserActionHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation class for table of users’ activities’ history</p>
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.UserActionHistory.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">login</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.UserActionHistory.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization of the table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>login</strong> – client’s nickname</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="serverapp.server_db.ServerDatabase.UserLoginHistory">
+<em class="property">class </em><code class="sig-name descname">UserLoginHistory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">login</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">address</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">port</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">datetime.datetime</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.UserLoginHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation class for table with users’ login history.</p>
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.UserLoginHistory.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">login</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">address</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">port</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">datetime.datetime</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.UserLoginHistory.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization of the table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>login</strong> – client’s nickname</p></li>
+<li><p><strong>address</strong> – client’s IP address</p></li>
+<li><p><strong>port</strong> – client’s port</p></li>
+<li><p><strong>date</strong> – date and time of activity</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization and creation of tables.
+Creates all the tables, mappers and a session.
+Deletes all previous entries from the table of active users.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> – path to DB</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.add_contact_to_list">
+<code class="sig-name descname">add_contact_to_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">owner</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">contact</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.add_contact_to_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles adding one user to the contacts of another.
+Checks if the user is already in the contact list and finishes
+working if they do, otherwise adds new entry to the Contacts table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>owner</strong> – the owner of the contact</p></li>
+<li><p><strong>contact</strong> – user to be added to contact list</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.all_active_users_list">
+<code class="sig-name descname">all_active_users_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#serverapp.server_db.ServerDatabase.all_active_users_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of tuples with entries of all currently active users.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.all_users_list">
+<code class="sig-name descname">all_users_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#serverapp.server_db.ServerDatabase.all_users_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of tuples with entries of all existing users.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.check_existing_user">
+<code class="sig-name descname">check_existing_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">login</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#serverapp.server_db.ServerDatabase.check_existing_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if such user already exists on the server.
+Returns True if they do, False otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>login</strong> – client’s nickname</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.get_message_history">
+<code class="sig-name descname">get_message_history</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#serverapp.server_db.ServerDatabase.get_message_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of tuples with entries of users’ message history.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.get_user_contact_list">
+<code class="sig-name descname">get_user_contact_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#serverapp.server_db.ServerDatabase.get_user_contact_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of strings with nicknames of all the contacts of a
+specific user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>user</strong> – client’s nickname</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.get_user_public_key">
+<code class="sig-name descname">get_user_public_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">login</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Crypto.PublicKey.RSA.RsaKey<a class="headerlink" href="#serverapp.server_db.ServerDatabase.get_user_public_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the public RSA key of the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>login</strong> – client’s nickname</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.get_user_pwd_hash">
+<code class="sig-name descname">get_user_pwd_hash</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">login</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bytes<a class="headerlink" href="#serverapp.server_db.ServerDatabase.get_user_pwd_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the hashed password of the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>login</strong> – client’s nickname</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.login_user">
+<code class="sig-name descname">login_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">login</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">ip</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">port</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">key</span><span class="p">:</span> <span class="n">Crypto.PublicKey.RSA.RsaKey</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.login_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the login process for clients.
+Checks if user is already registered on the server,
+and if he is logs him in, adds him to the table of active
+users and makes a new entry to the login history table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>login</strong> – client’s nickname</p></li>
+<li><p><strong>ip</strong> – client’s IP address</p></li>
+<li><p><strong>port</strong> – client’s port</p></li>
+<li><p><strong>key</strong> – client’s public RSA key</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.logout_user">
+<code class="sig-name descname">logout_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">login</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.logout_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the logout process on the server.
+Deletes the user from the table of active users.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>login</strong> – client’s nickname</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.record_message_to_history">
+<code class="sig-name descname">record_message_to_history</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sender</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">recipient</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.record_message_to_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Records message to message history.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sender</strong> – self-explanatory</p></li>
+<li><p><strong>recipient</strong> – self-explanatory as well</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.register_user">
+<code class="sig-name descname">register_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">login</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">pwd_hash</span><span class="p">:</span> <span class="n">bytes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.register_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the registration of a new user on the server.
+Creates a new entry to the All Users table and User Action History table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>login</strong> – client’s nickname</p></li>
+<li><p><strong>pwd_hash</strong> – hashed password</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.remove_contact_from_list">
+<code class="sig-name descname">remove_contact_from_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">owner</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">contact</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.remove_contact_from_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the removal of one user from the contacts of another.
+Checks if the user is actually in the contact list and finishes
+working if they aren’t, otherwise deletes the entry from the Contacts table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>owner</strong> – the owner of the contact</p></li>
+<li><p><strong>contact</strong> – user to be removed from the contact list</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.remove_user_from_db">
+<code class="sig-name descname">remove_user_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">login</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_db.ServerDatabase.remove_user_from_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the user and entries related to him from all the tables!
+ALL OF THEM!</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>login</strong> – client’s nickname</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_db.ServerDatabase.show_user_login_history">
+<code class="sig-name descname">show_user_login_history</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#serverapp.server_db.ServerDatabase.show_user_login_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of tuples with login history of either all users or one specific user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>user</strong> – client’s nickname</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="server-gui-py">
+<h2>server_gui.py<a class="headerlink" href="#server-gui-py" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="serverapp.server_gui.MainWindow">
+<em class="property">class </em><code class="sig-prename descclassname">serverapp.server_gui.</code><code class="sig-name descname">MainWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">server</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_core.MessagingServer" title="serverapp.server_core.MessagingServer">serverapp.server_core.MessagingServer</a></span></em>, <em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_db.ServerDatabase" title="serverapp.server_db.ServerDatabase">serverapp.server_db.ServerDatabase</a></span></em>, <em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">configparser.ConfigParser</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_gui.MainWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main class of GUI.</p>
+<dl class="py method">
+<dt id="serverapp.server_gui.MainWindow.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">server</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_core.MessagingServer" title="serverapp.server_core.MessagingServer">serverapp.server_core.MessagingServer</a></span></em>, <em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_db.ServerDatabase" title="serverapp.server_db.ServerDatabase">serverapp.server_db.ServerDatabase</a></span></em>, <em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">configparser.ConfigParser</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_gui.MainWindow.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>GUI initialization.
+Creates all the elements, creates the status bar and connects
+all the buttons to their respective handlers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server</strong> – server thread</p></li>
+<li><p><strong>db</strong> – server database</p></li>
+<li><p><strong>config</strong> – server configuration file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_gui.MainWindow.configure_server">
+<code class="sig-name descname">configure_server</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_gui.MainWindow.configure_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modal window with server configuration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_gui.MainWindow.create_active_users_model">
+<code class="sig-name descname">create_active_users_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_gui.MainWindow.create_active_users_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the model of all currently active users to show in the main
+window of the app. Queries the DB and adds entries to the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_gui.MainWindow.delete_user">
+<code class="sig-name descname">delete_user</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_gui.MainWindow.delete_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modal window with client deletion.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_gui.MainWindow.register_user">
+<code class="sig-name descname">register_user</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_gui.MainWindow.register_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modal window with client registration.
+That is the only way someone can be registered in the chat.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_gui.MainWindow.show_users_stats">
+<code class="sig-name descname">show_users_stats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_gui.MainWindow.show_users_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modal window with users’ action history.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="server-config-window-py">
+<h2>server_config_window.py<a class="headerlink" href="#server-config-window-py" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="serverapp.server_config_window.ConfigWindow">
+<em class="property">class </em><code class="sig-prename descclassname">serverapp.server_config_window.</code><code class="sig-name descname">ConfigWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">configparser.ConfigParser</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_config_window.ConfigWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main GUI class</p>
+<dl class="py method">
+<dt id="serverapp.server_config_window.ConfigWindow.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">configparser.ConfigParser</span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_config_window.ConfigWindow.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization of the GUI.
+Sets up all the elements and connects all the buttons
+to their respective handlers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> – configuration file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_config_window.ConfigWindow.file_dialog_handler">
+<code class="sig-name descname">file_dialog_handler</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_config_window.ConfigWindow.file_dialog_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles a modal window to choose the directory with the server DB.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_config_window.ConfigWindow.save_config_data">
+<code class="sig-name descname">save_config_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_config_window.ConfigWindow.save_config_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the modal window with server configuration data,
+checks the validity of the entered values and if they aren’t
+valid triggers a relevant message. On success triggers a message as well.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="server-history-window-py">
+<h2>server_history_window.py<a class="headerlink" href="#server-history-window-py" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="serverapp.server_history_window.UserHistoryWindow">
+<em class="property">class </em><code class="sig-prename descclassname">serverapp.server_history_window.</code><code class="sig-name descname">UserHistoryWindow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_db.ServerDatabase" title="serverapp.server_db.ServerDatabase">serverapp.server_db.ServerDatabase</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_history_window.UserHistoryWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main class of GUI.</p>
+<dl class="py method">
+<dt id="serverapp.server_history_window.UserHistoryWindow.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_db.ServerDatabase" title="serverapp.server_db.ServerDatabase">serverapp.server_db.ServerDatabase</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_history_window.UserHistoryWindow.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization of GUI.
+Creates all the necessary elements and the model with info to be displayed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>db</strong> – server database</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_history_window.UserHistoryWindow.create_message_history_model">
+<code class="sig-name descname">create_message_history_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_history_window.UserHistoryWindow.create_message_history_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the model with users’ history info.
+Queries the DB and adds entries to the model.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="server-reg-user-py">
+<h2>server_reg_user.py<a class="headerlink" href="#server-reg-user-py" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="serverapp.server_reg_user.RegisterUser">
+<em class="property">class </em><code class="sig-prename descclassname">serverapp.server_reg_user.</code><code class="sig-name descname">RegisterUser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_db.ServerDatabase" title="serverapp.server_db.ServerDatabase">serverapp.server_db.ServerDatabase</a></span></em>, <em class="sig-param"><span class="n">server_thread</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_core.MessagingServer" title="serverapp.server_core.MessagingServer">serverapp.server_core.MessagingServer</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_reg_user.RegisterUser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main class of GUI.</p>
+<dl class="py method">
+<dt id="serverapp.server_reg_user.RegisterUser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_db.ServerDatabase" title="serverapp.server_db.ServerDatabase">serverapp.server_db.ServerDatabase</a></span></em>, <em class="sig-param"><span class="n">server_thread</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_core.MessagingServer" title="serverapp.server_core.MessagingServer">serverapp.server_core.MessagingServer</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_reg_user.RegisterUser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization of GUI.
+Sets up al the necessary elements, connects the
+“save” button to its handler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db</strong> – server database</p></li>
+<li><p><strong>server_thread</strong> – server thread</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_reg_user.RegisterUser.save_user">
+<code class="sig-name descname">save_user</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_reg_user.RegisterUser.save_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the entered values and triggers relevant
+messages if the data is not correct. Otherwise, generates
+the hashed password, registers the user in the DB and prompts
+the server to update the active users’ list.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="server-rem-user-py">
+<h2>server_rem_user.py<a class="headerlink" href="#server-rem-user-py" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="serverapp.server_rem_user.RemoveUser">
+<em class="property">class </em><code class="sig-prename descclassname">serverapp.server_rem_user.</code><code class="sig-name descname">RemoveUser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_db.ServerDatabase" title="serverapp.server_db.ServerDatabase">serverapp.server_db.ServerDatabase</a></span></em>, <em class="sig-param"><span class="n">server_thread</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_core.MessagingServer" title="serverapp.server_core.MessagingServer">serverapp.server_core.MessagingServer</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_rem_user.RemoveUser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main class of GUI.</p>
+<dl class="py method">
+<dt id="serverapp.server_rem_user.RemoveUser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_db.ServerDatabase" title="serverapp.server_db.ServerDatabase">serverapp.server_db.ServerDatabase</a></span></em>, <em class="sig-param"><span class="n">server_thread</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#serverapp.server_core.MessagingServer" title="serverapp.server_core.MessagingServer">serverapp.server_core.MessagingServer</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_rem_user.RemoveUser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialization of GUI.
+Sets up all the necessary elements, connects the button to their handlers
+and triggers the update of the list of existing users.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db</strong> – server database</p></li>
+<li><p><strong>server_thread</strong> – server thread</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_rem_user.RemoveUser.remove_user">
+<code class="sig-name descname">remove_user</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_rem_user.RemoveUser.remove_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the deletion of the user. Checks if the user is registered
+on the server, deletes him and prompts the server to update the list of active users.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="serverapp.server_rem_user.RemoveUser.update_selector">
+<code class="sig-name descname">update_selector</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#serverapp.server_rem_user.RemoveUser.update_selector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the list of active users in the selector.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Takmachat</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="clientapp.html">Client module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Server module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-server">server.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#server-core-py">server_core.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#server-db-py">server_db.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#server-gui-py">server_gui.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#server-config-window-py">server_config_window.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#server-history-window-py">server_history_window.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#server-reg-user-py">server_reg_user.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#server-rem-user-py">server_rem_user.py</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Common utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Logs module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="clientapp.html" title="previous chapter">Client module</a></li>
+      <li>Next: <a href="utils.html" title="next chapter">Common utils module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Dmitry Takmakov.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/serverapp.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

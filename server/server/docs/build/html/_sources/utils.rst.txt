@@ -1,0 +1,40 @@
+Common utils module
+===================
+
+Common functions and constants used throughout the project.
+
+utils.py
+~~~~~~~~
+
+.. automodule:: utils.utils
+   :members:
+   :special-members:
+
+decorators.py
+~~~~~~~~~~~~~
+
+.. automodule:: utils.decorators
+   :members:
+   :special-members:
+
+descriptors.py
+~~~~~~~~~~~~~~
+
+.. autoclass:: utils.descriptors.Port
+   :members:
+   :special-members:
+
+errors.py
+~~~~~~~~~
+
+.. autoclass:: utils.errors.IncorrectDataReceivedError
+   :members:
+   :special-members:
+
+.. autoclass:: utils.errors.NotADictionaryError
+   :members:
+   :special-members:
+
+.. autoclass:: utils.errors.ServerError
+   :members:
+   :special-members:

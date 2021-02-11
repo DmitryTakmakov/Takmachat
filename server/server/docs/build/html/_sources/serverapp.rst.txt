@@ -1,0 +1,82 @@
+Server module
+=================================================
+
+Messenger's server module. Processes message dictionaries, stores RSA public keys of clients.
+
+Usage:
+
+The module supports the following command line arguments:
+
+-a, --addr   Address from which the connection is accepted. If blank, then connection is accepted from all addresses.
+-p, --port   Listening port that accepts the connections
+-n, --no_gui   The 'no gui' flag. If present the server module will run in console window with limited functionality. Note, that in this mode only one command is supported: exit - stops the server.
+
+Examples:
+
+* ``python server.py -p 8080``
+
+*Starts the server at port 8080*
+
+* ``python server.py -a localhost``
+
+*Starts the server that accepts connections from localhost only*
+
+* ``python server.py -n``
+
+*Starts the server with no GUI*
+
+server.py
+~~~~~~~~~
+
+.. automodule:: server
+   :members:
+
+server_core.py
+~~~~~~~~~~~~~~
+
+.. autoclass:: serverapp.server_core.MessagingServer
+   :members:
+   :special-members:
+
+server_db.py
+~~~~~~~~~~~~
+
+.. autoclass:: serverapp.server_db.ServerDatabase
+   :members:
+   :special-members:
+   :exclude-members: __dict__, __weakref__, __repr__
+
+server_gui.py
+~~~~~~~~~~~~~
+
+.. autoclass:: serverapp.server_gui.MainWindow
+   :members:
+   :special-members:
+
+server_config_window.py
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: serverapp.server_config_window.ConfigWindow
+   :members:
+   :special-members:
+
+server_history_window.py
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: serverapp.server_history_window.UserHistoryWindow
+   :members:
+   :special-members:
+
+server_reg_user.py
+~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: serverapp.server_reg_user.RegisterUser
+   :members:
+   :special-members:
+
+server_rem_user.py
+~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: serverapp.server_rem_user.RemoveUser
+   :members:
+   :special-members:

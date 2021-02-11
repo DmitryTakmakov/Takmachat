@@ -1,0 +1,83 @@
+Client module
+=================================================
+
+Client's application to exchange messages. Supports sending the messages to users that are currently
+active (online). All messages are encrypted with RSA algorithm using 2048 bit key.
+
+The module supports the following command line arguments:
+
+``python client.py -a {server name} -p {port} -n {users's login} -pw {password}``
+
+-a, --address   Messaging server's IP address
+-p, --port   Server port, that accepts the connection
+-n, --nickname   Client's login used to authorize on the server
+-pw, --password   Client's password used to authorize on the server
+
+All these command line arguments are not obligatory, but if you use the login, you **must** use the password as well.
+
+Examples:
+
+* ``python client.py``
+
+*Starts the app with default parameters*
+
+* ``python client.py -a ip_address -p some_port``
+
+*Starts the app that connects to the server at ip_address:port*
+
+* ``python -n test1 -pw 123``
+
+*Starts the app for user with login test1 and password 123*
+
+* ``python client.py -a ip_address -p some_port -n test1 -pw 123``
+
+*Starts the app that connects to the server at ip_address:port for user with login test1 and password 123*
+
+client.py
+~~~~~~~~~
+
+.. automodule:: client
+   :members:
+
+client_socket.py
+~~~~~~~~~~~~~~~~
+
+.. autoclass:: clientapp.client_socket.ClientSocket
+   :members:
+   :special-members:
+
+client_db.py
+~~~~~~~~~~~~
+
+.. autoclass:: clientapp.client_db.ClientDatabase
+   :members:
+   :special-members:
+   :exclude-members: __dict__, __weakref__, __repr__
+
+client_main_window.py
+~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: clientapp.client_main_window.MainWindowClient
+   :members:
+   :special-members:
+
+client_start_window.py
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: clientapp.client_start_window.ClientLoginDialog
+   :members:
+   :special-members:
+
+client_add_contact.py
+~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: clientapp.client_add_contact.AddContactDialog
+   :members:
+   :special-members:
+
+client_del_contact.py
+~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: clientapp.client_del_contact.DelContactDialog
+   :members:
+   :special-members:

@@ -1,0 +1,18 @@
+Logs module
+===========
+
+Two modules that set up logging functions for both server and client apps.
+
+client_log_config.py
+~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: logs.client_log_config
+   :members:
+   :special-members:
+
+server_log_config.py
+~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: logs.server_log_config
+   :members:
+   :special-members:

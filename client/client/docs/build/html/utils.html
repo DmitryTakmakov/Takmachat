@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Common utils module &#8212; Takmachat 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Logs module" href="logs.html" />
+    <link rel="prev" title="Server module" href="serverapp.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="common-utils-module">
+<h1>Common utils module<a class="headerlink" href="#common-utils-module" title="Permalink to this headline">¶</a></h1>
+<p>Common functions and constants used throughout the project.</p>
+<div class="section" id="module-utils.utils">
+<span id="utils-py"></span><h2>utils.py<a class="headerlink" href="#module-utils.utils" title="Permalink to this headline">¶</a></h2>
+<p>Common functions used in both server and client apps.</p>
+</div>
+<div class="section" id="module-utils.decorators">
+<span id="decorators-py"></span><h2>decorators.py<a class="headerlink" href="#module-utils.decorators" title="Permalink to this headline">¶</a></h2>
+<p>Logging decorators used in the project.</p>
+<dl class="py function">
+<dt id="utils.decorators.function_log">
+<code class="sig-prename descclassname">utils.decorators.</code><code class="sig-name descname">function_log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.decorators.function_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>The decorator function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="descriptors-py">
+<h2>descriptors.py<a class="headerlink" href="#descriptors-py" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="utils.descriptors.Port">
+<em class="property">class </em><code class="sig-prename descclassname">utils.descriptors.</code><code class="sig-name descname">Port</code><a class="headerlink" href="#utils.descriptors.Port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Descriptor class</p>
+<dl class="py method">
+<dt id="utils.descriptors.Port.__set__">
+<code class="sig-name descname">__set__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">instance</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.descriptors.Port.__set__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the server port.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utils.descriptors.Port.__set_name__">
+<code class="sig-name descname">__set_name__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">owner</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.descriptors.Port.__set_name__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the name of the Port object.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="utils.descriptors.Port.__weakref__">
+<code class="sig-name descname">__weakref__</code><a class="headerlink" href="#utils.descriptors.Port.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="errors-py">
+<h2>errors.py<a class="headerlink" href="#errors-py" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="utils.errors.IncorrectDataReceivedError">
+<em class="property">class </em><code class="sig-prename descclassname">utils.errors.</code><code class="sig-name descname">IncorrectDataReceivedError</code><a class="headerlink" href="#utils.errors.IncorrectDataReceivedError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised if the data received was incorrect.</p>
+<dl class="py method">
+<dt id="utils.errors.IncorrectDataReceivedError.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utils.errors.IncorrectDataReceivedError.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation for print.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="utils.errors.IncorrectDataReceivedError.__weakref__">
+<code class="sig-name descname">__weakref__</code><a class="headerlink" href="#utils.errors.IncorrectDataReceivedError.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="utils.errors.NotADictionaryError">
+<em class="property">class </em><code class="sig-prename descclassname">utils.errors.</code><code class="sig-name descname">NotADictionaryError</code><a class="headerlink" href="#utils.errors.NotADictionaryError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised if the data received was not a dictionary, when it
+was supposed to be a dictionary.</p>
+<dl class="py method">
+<dt id="utils.errors.NotADictionaryError.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utils.errors.NotADictionaryError.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation for print.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="utils.errors.NotADictionaryError.__weakref__">
+<code class="sig-name descname">__weakref__</code><a class="headerlink" href="#utils.errors.NotADictionaryError.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="utils.errors.ServerError">
+<em class="property">class </em><code class="sig-prename descclassname">utils.errors.</code><code class="sig-name descname">ServerError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">error_message</span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.errors.ServerError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised when the server encounters and error.</p>
+<dl class="py method">
+<dt id="utils.errors.ServerError.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">error_message</span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.errors.ServerError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>There can be a custom error text in this exception.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>error_message</strong> – custom message</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="utils.errors.ServerError.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utils.errors.ServerError.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation for print.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="utils.errors.ServerError.__weakref__">
+<code class="sig-name descname">__weakref__</code><a class="headerlink" href="#utils.errors.ServerError.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Takmachat</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="clientapp.html">Client module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serverapp.html">Server module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Common utils module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-utils.utils">utils.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-utils.decorators">decorators.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#descriptors-py">descriptors.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#errors-py">errors.py</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Logs module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="serverapp.html" title="previous chapter">Server module</a></li>
+      <li>Next: <a href="logs.html" title="next chapter">Logs module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Dmitry Takmakov.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

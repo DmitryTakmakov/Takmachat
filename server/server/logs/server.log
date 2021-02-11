@@ -1,0 +1,5 @@
+2021-02-12 01:53:17,081 DEBUG      decorators.py Функция main_cycle была вызвана в модуле __main__ с параметрами ((), {}). Вызов произошел из функции <module>.
+2021-02-12 01:53:17,082 DEBUG      decorators.py Функция get_config_params была вызвана в модуле __main__ с параметрами ((), {}). Вызов произошел из функции main_cycle.
+2021-02-12 01:53:17,106 DEBUG      decorators.py Функция get_launch_params была вызвана в модуле __main__ с параметрами (('', '7777'), {}). Вызов произошел из функции main_cycle.
+2021-02-12 01:53:17,106 DEBUG      server.py  Инициализация парсера аргументов командной строки: ['/home/dimadat/PycharmProjects/Takmachat/server/server.py']
+2021-02-12 01:53:17,107 INFO       server.py  Аргументы загружены
